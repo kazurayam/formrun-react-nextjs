@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1>Reactアプリケーションの中で formrunを使うサンプル</h1>
+        <h1>React＋Next.jsアプリケーションとformrunを連携させるサンプル</h1>
         <ContactForm />
       </main>
     </div>
