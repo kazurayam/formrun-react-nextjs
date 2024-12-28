@@ -94,7 +94,13 @@ $ npm run dev
 
 ![contact-view.png](https://kazurayam.github.io/formrun-react-nextjs/images/contact-view.png)
 
-F12キーでDeveloper Toolを開いてDOMツリーを見よう。たしかに `<iframe>` が挿入されていて、src属性がwebフォームの公開URLを指していることを確認することができた。React＋Next.jsアプリとformrunにホストされたwebフォームを連携させることができている。
+F12キーでDeveloper Toolを開いてDOMツリーを見よう。
+
+![contact-DOM.png](https://kazurayam.github.io/formrun-react-nextjs/images/contact-DOM.png)
+
+たしかに `<iframe>` が挿入されていて、src属性がwebフォームの公開URLを指していることを確認することができた。
+
+React＋Next.jsアプリとformrunにホストされたwebフォームを連携させることができた。
 
 ### useEffect関数でReactと`<script>`を連携させる
 
