@@ -8,13 +8,16 @@ const initialState = {
 }
 
 export default function ContactForm() {
+  if (!process.env.NEXT_PUBLIC_FORMRUN_FORM_URL_PATH) {
+    throw new Error("NEXT_PUBLIC_FORMRUN_FORM_URL_PATH is required");
+  }
   useEffect(() => {
-    /*
-    <div id="test">
+    /* generate the following stuff in the DOM
+    <div id="contact">
       <script src="https://sdk.form.run/js/v2/embed.js"></script>
       <div
         class="formrun-embed"
-        data-formrun-form="@kazuaki-urayama-IJRqxLbyvQ1bsFH4C0iC"
+        data-formrun-form=`${NEXT_PUBLIC_FORMRUN_FORM_URL_PATH}`
         data-formrun-redirect="true">
       </div>
     </div>
@@ -27,17 +30,12 @@ export default function ContactForm() {
 
     const embed = document.createElement("div");
     embed.className = "formrun-embed";
-    embed.setAttribute("data-formrun-form", "@kazuaki-urayama-IJRqxLbyvQ1bsFH4C0iC");
+    embed.setAttribute("data-formrun-form", `${process.env.NEXT_PUBLIC_FORMRUN_FORM_URL_PATH}`);
     embed.setAttribute("data-formrun-redirect", "true");
     contact?.appendChild(embed);
 
-    const script2 = document.createElement("script");
-    script2.textContent = 'console.log("Voila!")';
-    contact?.appendChild(script2);
-
     return () => {
       contact?.removeChild(script);
-      contact?.removeChild(script2);
     }
   }, []);
 
