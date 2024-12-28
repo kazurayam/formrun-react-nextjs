@@ -98,14 +98,14 @@ F12キーでDeveloper Toolを開いてDOMツリーを見よう。
 
 ![contact-DOM.png](https://kazurayam.github.io/formrun-react-nextjs/images/contact-DOM.png)
 
-たしかに `<iframe>` が挿入されていて、src属性がwebフォームの公開URLを指していることを確認することができた。
+たしかに `<iframe>` が挿入されていて、src属性がwebフォームの公開URLを指していることを確認することができた。React＋Next.jsアプリとformrunにホストされたwebフォームを連携させることができた。
 
-React＋Next.jsアプリとformrunにホストされたwebフォームを連携させることができた。
-
-### useEffect関数でReactと`<script>`を連携させる
+### Reactと`<script>`を副作用フックで連携させる
 
 お問い合わせページコンポーネントが開かれた時、`useEffect`関数を利用してHTML DOMを動的に書き換えて
-`<iframe>`を挿入したい。どうすればいいのか？`app/_components/ContactForm/index.tsx`のコードを読め。
+`<iframe>`を挿入したい。どういうコードを書けばいいのか？
+
+`app/_components/ContactForm/index.tsx`のコードを読め。
 
 - https://github.com/kazurayam/formrun-react-nextjs/blob/main/app/_components/ContactForm/index.tsx
 
