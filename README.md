@@ -24,16 +24,16 @@ formrunの流儀によれば、WebサイトのHTMLの中に下記のようなコ
 ```
 
 このコードは何を意図しているのか？
-`<script src="https://sdk.form.run/js/v2/embed.js">`が実行されるとJavaScriptが動いて、
-直後の`<div>`要素の中に`<iframe>`要素を挿入する。
-その`<iframe>`はformrunが組み立てたwebフォームのURLを参照する。
-結果的にwebページの中にformrunのwebフォームが埋め込まれて表示される。
+`<script src="https://sdk.form.run/js/v2/embed.js">`が実行されれば `embed.js` が動いて
+直後の`<div>`要素の中に`<iframe>`要素を挿入するはずだ。
+その`<iframe>`はformrunが提供するwebフォームのURLを参照するので、結果的にwebページの中にwebフォームが埋め込まれて表示されるだろう。
 
-しかしながら`<script>`はReactの外側（step outside of React）にある。
-だからブラウザで「お問い合わせページ」が表示されたとしても、適切な工夫を施さなければ、
-`<script>`が指し示すJavaScriptコードはダウンロードすらされない。もちろん実行されない。
+しかしながらWebページのHTMLソースに書かれた `<script>`タグはReactの外側（step outside of React）にある。だからReactで構築された「お問い合わせページ」がブラウザの上で表示されたとしても
+`<script>`は実行されない。`<script>`要素の`src`属性が指すJavaScriptコードはダウンロードすらされない。これではダメだ。
 
-Reactコンポーネントが描画されたタイミングでフックを起動しよう。h副作用フック [`useEffect`](https://react.dev/reference/react/useEffect) 関数を使え。ブラウザ上でお問い合わせページのコンポーネントが開かれた時に`useEffect`でHTML DOMを動的に書き換えて
+ではどうすればいい？
+
+Reactコンポーネントが描画されたタイミングでフックを起動しよう。副作用フック [`useEffect`](https://react.dev/reference/react/useEffect) 関数を使え。ブラウザ上でお問い合わせページのコンポーネントが開かれた時に`useEffect`でHTML DOMを動的に書き換えて
 `<iframe>`を挿入すればいい。
 
 ## 説明
