@@ -12,7 +12,7 @@ formrunのサイトの説明を見たが、Reactとformrunの連携について�
 
 ## 解決方法
 
-formrunの流儀によれば、WebサイトのHTMLの中に下記のようなコードを埋め込みなさい、という。
+formrunの説明にはあなたのWebサイトのHTMLの中に下記のようなコードを埋め込みなさい、と書いてある。
 
 ```
 <script src="https://sdk.form.run/js/v2/embed.js"></script>
