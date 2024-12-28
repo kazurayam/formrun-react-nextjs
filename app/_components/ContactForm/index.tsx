@@ -43,7 +43,7 @@ export default function ContactForm() {
 
   return (
     <>
-      <div id="contact">コンタクトForm</div>
+      <div id="contact"></div>
     </>
   );
 }
