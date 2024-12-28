@@ -71,13 +71,13 @@ $ npm run dev
 
 とやる。
 
-### サイトを開け
+### サイトをvisitする
 
 ブラウザで
 
 - http://localhost:3000
 
-を開け。すると次のような画面が表示されるはず。
+をひらけ。すると次のような画面が表示されるはず。
 
-
+- [contact.png](https://kazurayam.github.io/formrun-react-nextjs/images/contact.png)
 
