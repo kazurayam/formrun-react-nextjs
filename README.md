@@ -23,16 +23,17 @@ formrunの流儀によれば、WebサイトのHTMLの中に下記のようなコ
 </div>
 ```
 
-このコードの意図はよくわかる。
+このコードは何を意図しているのか？
 `<script src="https://sdk.form.run/js/v2/embed.js">`が実行されるとJavaScriptが動いて、
-直後の`<div>`要素の中に`<iframe>`要素を挿入する。`<iframe>`がformrunが組み立てたwebフォームのURLを参照する。
+直後の`<div>`要素の中に`<iframe>`要素を挿入する。
+その`<iframe>`はformrunが組み立てたwebフォームのURLを参照する。
+結果的にwebページの中にformrunのwebフォームが埋め込まれて表示される。
 
 しかしながら`<script>`はReactの外側（step outside of React）にある。
-だからブラウザで「お問い合わせページ」が表示されたことにより、
-Reactコンポーネントの状態(PropsやState)が変化したとしても、適切な工夫を施さなければ、
+だからブラウザで「お問い合わせページ」が表示されたとしても、適切な工夫を施さなければ、
 `<script>`が指し示すJavaScriptコードはダウンロードされないし、実行されない。
 
-こういうとき、Reactの `useEffect` 関数を利用する。
+こういうときはReactの `useEffect` 関数を利用する。
 お問い合わせページコンポーネントが開かれた時、`useEffect`でHTML DOMを動的に書き換えて
 `<iframe>`を挿入しよう。
 
@@ -60,6 +61,11 @@ NEXT_PUBLIC_FORMRUN_FORM_URL_PATH=@kazuXXXXXXXXX-XXXXXXXXXXXXXXXXXXX
 
 formrunがあなたのフォームに固有の識別情報を割り当てる。それを `.env.local` に指定せよ。
 
+なおこの環境変数をブラウザ上で動くJavaScriptが参照できるように、名前を `NEXT_PUBLIC_` で始まるものにしなければならない。詳しくはNext.jsのドキュメントを参照のこと。
+
+- [Next.js | Bundling Environment Variables for the Browser](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser)
+
+
 ### サーバを起動せよ
 
 いつものように
@@ -71,7 +77,7 @@ $ npm run dev
 
 とやる。
 
-### サイトをvisitする
+### ブラウザでサイトを見る
 
 ブラウザで
 
@@ -79,5 +85,64 @@ $ npm run dev
 
 をひらけ。すると次のような画面が表示されるはず。
 
-- [contact.png](https://kazurayam.github.io/formrun-react-nextjs/images/contact.png)
+![contact-view.png](https://kazurayam.github.io/formrun-react-nextjs/images/contact-view.png)
+
+F12キーでDeveloper Toolを開いてDOMツリーを見よう。たしかに `<iframe>` が挿入されていて、src属性がwebフォームの公開URLを指していることを確認することができた。React＋Next.jsアプリとformrunにホストされたwebフォームを連携させることができている。
+
+### useEffect関数でReactと`<script>`を連携させる
+
+お問い合わせページコンポーネントが開かれた時、`useEffect`関数を利用してHTML DOMを動的に書き換えて
+`<iframe>`を挿入したい。どうすればいいのか？`app/_components/ContactForm/index.tsx`のコードを読め。
+
+- https://github.com/kazurayam/formrun-react-nextjs/blob/main/app/_components/ContactForm/index.tsx
+
+```
+"use client";
+
+import { useEffect } from 'react';
+
+const initialState = {
+  status: "",
+  message: "",
+}
+
+export default function ContactForm() {
+  if (!process.env.NEXT_PUBLIC_FORMRUN_FORM_URL_PATH) {
+    throw new Error("NEXT_PUBLIC_FORMRUN_FORM_URL_PATH is required");
+  }
+  useEffect(() => {
+    /* generate the following stuff in the DOM
+    <div id="contact">
+      <script src="https://sdk.form.run/js/v2/embed.js"></script>
+      <div
+        class="formrun-embed"
+        data-formrun-form=`${NEXT_PUBLIC_FORMRUN_FORM_URL_PATH}`
+        data-formrun-redirect="true">
+      </div>
+    </div>
+    */
+    const contact = document.getElementById("contact");
+    const script = document.createElement("script");
+    script.setAttribute("src", "https://sdk.form.run/js/v2/embed.js");
+    script.async = true;
+    contact?.appendChild(script);
+
+    const embed = document.createElement("div");
+    embed.className = "formrun-embed";
+    embed.setAttribute("data-formrun-form", `${process.env.NEXT_PUBLIC_FORMRUN_FORM_URL_PATH}`);
+    embed.setAttribute("data-formrun-redirect", "true");
+    contact?.appendChild(embed);
+
+    return () => {
+      contact?.removeChild(script);
+    }
+  }, []);
+
+  return (
+    <>
+      <div id="contact"></div>
+    </>
+  );
+}
+```
 
