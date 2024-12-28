@@ -60,7 +60,7 @@ Reactコンポーネントが描画されたタイミングでフックを起動
 
 ### 環境変数を定義せよ
 
-プロジェクトのディレクトリに（すなわち`app`ディレクトリの隣に） `.env.local` ファイルを作れ。。`.env.local`ファイルの中で環境変数 `NEXT_PUBLIC_FORMRUN_FORM_URL_PATH` を定義せよ。
+プロジェクトのディレクトリに（すなわち`app`ディレクトリの隣に） `.env.local` ファイルを作れ。`.env.local`ファイルの中で環境変数 `NEXT_PUBLIC_FORMRUN_FORM_URL_PATH` を定義せよ。
 
 ```
 NEXT_PUBLIC_FORMRUN_FORM_URL_PATH=@kazuXXXXXXXXX-XXXXXXXXXXXXXXXXXXX
@@ -68,7 +68,7 @@ NEXT_PUBLIC_FORMRUN_FORM_URL_PATH=@kazuXXXXXXXXX-XXXXXXXXXXXXXXXXXXX
 
 この環境変数の値として formrunが生成したあなたのフォームのURLのパス文字列を設定します。
 
-なおこの環境変数をブラウザ上で動くJavaScriptが参照できるように、名前を `NEXT_PUBLIC_` で始まるものにしなければならない。詳しくはNext.jsのドキュメントを参照のこと。
+この環境変数の名前を `NEXT_PUBLIC_` で始まるものにしなければならない。ブラウザ上で動くJavaScriptが参照できるようにするためだ。名前を詳しくはNext.jsのドキュメントを参照のこと。
 
 - [Next.js | Bundling Environment Variables for the Browser](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables#bundling-environment-variables-for-the-browser)
 
