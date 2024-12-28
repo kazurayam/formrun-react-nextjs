@@ -31,17 +31,24 @@ formrunの流儀によれば、WebサイトのHTMLの中に下記のようなコ
 
 しかしながら`<script>`はReactの外側（step outside of React）にある。
 だからブラウザで「お問い合わせページ」が表示されたとしても、適切な工夫を施さなければ、
-`<script>`が指し示すJavaScriptコードはダウンロードされないし、実行されない。
+`<script>`が指し示すJavaScriptコードはダウンロードすらされない。もちろん実行されない。
 
-こういうときはReactの `useEffect` 関数を利用する。
-お問い合わせページコンポーネントが開かれた時、`useEffect`でHTML DOMを動的に書き換えて
-`<iframe>`を挿入しよう。
+Reactコンポーネントが描画されたタイミングでフックを起動しよう。h副作用フック [`useEffect`](https://react.dev/reference/react/useEffect) 関数を使え。ブラウザ上でお問い合わせページのコンポーネントが開かれた時に`useEffect`でHTML DOMを動的に書き換えて
+`<iframe>`を挿入すればいい。
 
 ## 説明
 
 ### formrunでフォームを作れ
 
-[formrun](https://form.run/home)にあなたのアカウントを作れ。ひとつ、問い合わせフォームを作成せよ。formrunとは何か、どう操作するのか、といった説明はここではしない。彼らの説明に従。サンプルのテンプレートを選んでボタンを数回クリックすれば数分でできる。
+[formrun](https://form.run/home)にあなたのアカウントを作れ。ひとつ、問い合わせフォームを作成せよ。formrunとは何か、どう操作するのか、といった説明はここではしない。彼らの説明に従え。サンプルのテンプレートを選んでボタンを数回クリックすれば数分でできる。
+
+ちなみにformrunはひとつひとつのフォームに固有のURLを割り当てる。たとえば
+
+`https://form.run/@kazuXXX-XXXXXXX-XXXXXXXXXXXXXXXXXXXX`
+
+ここでXXXの部分はあなたのフォームに割り当てられた具体的な文字列に置き換えてください。
+
+このURLのパス部分つまり `https://form.run/` に続く `@`を含む文字列を後ほど「問い合わせ」ページのHTMLの中に埋め込むことによって、あなたのサイトとformrunを連携させることができます。
 
 ### Nodeが必要
 
@@ -53,13 +60,13 @@ formrunの流儀によれば、WebサイトのHTMLの中に下記のようなコ
 
 ### 環境変数を定義せよ
 
-プロジェクトのディレクトリに `.env.local` ファイルを作れ。その中で環境変数 `NEXT_PUBLIC_FORMRUN_FORM_URL_PATH` を定義せよ。
+プロジェクトのディレクトリに（すなわち`app`ディレクトリの隣に） `.env.local` ファイルを作れ。。`.env.local`ファイルの中で環境変数 `NEXT_PUBLIC_FORMRUN_FORM_URL_PATH` を定義せよ。
 
 ```
 NEXT_PUBLIC_FORMRUN_FORM_URL_PATH=@kazuXXXXXXXXX-XXXXXXXXXXXXXXXXXXX
 ```
 
-formrunがあなたのフォームに固有の識別情報を割り当てる。それを `.env.local` に指定せよ。
+この環境変数の値として formrunが生成したあなたのフォームのURLのパス文字列を設定します。
 
 なおこの環境変数をブラウザ上で動くJavaScriptが参照できるように、名前を `NEXT_PUBLIC_` で始まるものにしなければならない。詳しくはNext.jsのドキュメントを参照のこと。
 
